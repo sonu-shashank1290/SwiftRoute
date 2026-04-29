@@ -12,5 +12,6 @@ export class DeliveryItem extends Model {
     @field('longitude') longitude!: number;
     @field('sequence') sequence?: number;
     @field('trip_id') tripId?: string;
+    @field('user_id') userId!: string;
     @readonly @date('created_at') createdAt!: Date;
 }

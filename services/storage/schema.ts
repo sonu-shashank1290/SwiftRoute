@@ -4,6 +4,15 @@ export const schema = appSchema({
     version: 1,
     tables: [
         tableSchema({
+            name: 'users',
+            columns: [
+                { name: 'name', type: 'string' },
+                { name: 'email', type: 'string' },
+                { name: 'role', type: 'string' },
+                { name: 'created_at', type: 'number' },
+            ],
+        }),
+        tableSchema({
             name: 'delivery_items',
             columns: [
                 { name: 'tracking_id', type: 'string' },
@@ -14,6 +23,7 @@ export const schema = appSchema({
                 { name: 'longitude', type: 'number' },
                 { name: 'sequence', type: 'number', isOptional: true },
                 { name: 'trip_id', type: 'string', isOptional: true },
+                { name: 'user_id', type: 'string' },
                 { name: 'created_at', type: 'number' },
             ],
         }),
