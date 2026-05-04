@@ -3,13 +3,11 @@ module.exports = function (api) {
 
   return {
     presets: [['babel-preset-expo'], 'nativewind/babel'],
-
     plugins: [
       [
         'module-resolver',
         {
           root: ['./'],
-
           alias: {
             '@': './',
             'tailwind.config': './tailwind.config.js',
@@ -17,6 +15,7 @@ module.exports = function (api) {
         },
       ],
       'react-native-worklets/plugin',
+      ['@babel/plugin-proposal-decorators', { legacy: true }],
     ],
   };
 };

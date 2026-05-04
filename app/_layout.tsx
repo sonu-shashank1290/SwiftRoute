@@ -1,28 +1,51 @@
 import '@/global.css';
-
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { useEffect } from 'react';
+import { Stack, useRouter } from 'expo-router';
+import { Provider, useSelector } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from '@/store';
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
+import { seedUsers } from '@/services/storage/seedUsers';
+import { seedDeliveries } from '@/services/storage/seedDeliveries';
+import type { RootState } from '@/store';
+import { ActivityIndicator } from 'react-native';
 
-export default function App() {
+function RouteGuard() {
+  const router = useRouter();
+  const { isAuthenticated, role } = useSelector((s: RootState) => s.auth);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace('/(auth)/login');
+    } else if (isAuthenticated) {
+      role === 'driver'
+        ? router.replace('/(driver)')
+        : router.replace('/(user)');
+    }
+  }, [isAuthenticated, role]);
+
   return (
-    
-    <GluestackUIProvider mode="dark">
-      <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-    </GluestackUIProvider>
-  
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(auth)/login" />
+      <Stack.Screen name="(user)" />
+      <Stack.Screen name="(driver)" />
+    </Stack>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function RootLayout() {
+  useEffect(() => {
+    seedUsers();
+    seedDeliveries();
+  }, []);
+
+  return (
+    <Provider store={store}>
+      <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
+        <GluestackUIProvider mode="dark">
+          <RouteGuard />
+        </GluestackUIProvider>
+      </PersistGate>
+    </Provider>
+  );
+}
