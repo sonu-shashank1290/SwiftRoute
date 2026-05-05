@@ -56,7 +56,6 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
             <BottomSheet
                 ref={ref}
                 index={-1}
-                snapPoints={['40%', '70%']}
                 enablePanDownToClose
                 onClose={handleClose}
                 backgroundStyle={{ backgroundColor: '#1e1e2e' }}
