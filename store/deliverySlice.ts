@@ -1,30 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type Status = 'pending' | 'delivered' | 'failed';
+import type { DeliveryItem, Status } from '@/types/delivery';
 
-type DeliveryItem = {
-    id: string;
-    trackingId: string;
-    recipient: string;
-    address: string;
-    status: Status;
-    latitude: number;
-    longitude: number;
-    sequence?: number;
-    tripId?: string;
-    userId: string;
-};
-
-type State = {
+type deliveryState = {
     items: DeliveryItem[];
     filter: 'all' | Status;
     loading: boolean;
+    selectedDelivery: DeliveryItem | null;
 }
 
-const initialState: State = {
+const initialState: deliveryState = {
     items: [],
     filter: 'all',
     loading: false,
+    selectedDelivery: null,
 };
 
 const deliverySlice = createSlice({
@@ -34,19 +23,25 @@ const deliverySlice = createSlice({
         setItems(state, action: PayloadAction<DeliveryItem[]>) {
             state.items = action.payload;
         },
-        setFilter(state, action: PayloadAction<State['filter']>) {
+        setFilter(state, action: PayloadAction<deliveryState['filter']>) {
             state.filter = action.payload;
         },
         setLoading(state, action: PayloadAction<boolean>) {
             state.loading = action.payload;
         },
+        setSelectedDelivery(state, action: PayloadAction<DeliveryItem | null>) {
+            state.selectedDelivery = action.payload;
+        },
         updateStatus(state, action: PayloadAction<{ id: string; status: Status }>) {
             const item = state.items.find(item => item.id === action.payload.id);
             if (item) item.status = action.payload.status;
+            if (state.selectedDelivery?.id === action.payload.id) {
+                state.selectedDelivery.status = action.payload.status;
+            }
         }
     }
 });
 
-export const { setItems, setFilter, setLoading, updateStatus } = deliverySlice.actions;
+export const { setItems, setFilter, setLoading, setSelectedDelivery, updateStatus } = deliverySlice.actions;
 
 export default deliverySlice.reducer;

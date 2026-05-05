@@ -6,13 +6,16 @@ import { login } from '@/store/authSlice';
 import { MOCK_USERS } from '@/constants/mockUsers';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import { Input, InputField } from '@/components/ui/input';
+import { AppDispatch } from '@/store';
+
 
 export default function Login() {
-  const dispatch = useDispatch();
-  const [email, setEmail]       = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError]       = useState('');
-  const [loading, setLoading]   = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async () => {
     setError('');
@@ -43,27 +46,31 @@ export default function Login() {
 
         <VStack space="sm">
           <Text className="text-app-text-secondary text-sm">Email</Text>
-          <TextInput
-            value={email}
-            onChangeText={setEmail}
-            placeholder="user@test.com"
-            placeholderTextColor="#52525b"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            style={{ backgroundColor: '#1e1e2e', color: '#fff', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontSize: 14 }}
-          />
+          <Input className="bg-app-surface rounded-xl border-0">
+            <InputField
+              value={email}
+              onChangeText={setEmail}
+              placeholder="user@test.com"
+              placeholderTextColor="#52525b"
+              autoCapitalize="none"
+              keyboardType="email-address"
+              className="text-app-text-primary text-sm"
+            />
+          </Input>
         </VStack>
 
         <VStack space="sm">
           <Text className="text-app-text-secondary text-sm">Password</Text>
-          <TextInput
-            value={password}
-            onChangeText={setPassword}
-            placeholder="••••••"
-            placeholderTextColor="#52525b"
-            secureTextEntry
-            style={{ backgroundColor: '#1e1e2e', color: '#fff', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontSize: 14 }}
-          />
+          <Input className="bg-app-surface rounded-xl border-0">
+            <InputField
+              value={password}
+              onChangeText={setPassword}
+              placeholder="••••••"
+              placeholderTextColor="#52525b"
+              secureTextEntry
+              className="text-app-text-primary text-sm"
+            />
+          </Input>
         </VStack>
 
         {error ? <Text className="text-app-danger text-sm">{error}</Text> : null}

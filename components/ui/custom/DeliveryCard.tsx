@@ -1,40 +1,40 @@
+import { memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Box } from '../box';
-import { Text } from '../text';
-import { HStack } from '../hstack';
-import { VStack } from '../vstack';
+import { Box } from '@/components/ui/box';
+import { Text } from '@/components/ui/text';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import type { DeliveryItem } from '@/types/delivery';
+import { setSelectedDelivery } from '@/store/deliverySlice';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '@/store';
 
-type Status = 'pending' | 'delivered' | 'failed';
-
-type Props = {
-    item: {
-        id: string;
-        trackingId: string;
-        recipient: string;
-        address: string;
-        status: Status;
-        tripId?: string;
-    };
-};
-
-const STATUS_BG: Record<Status, string> = {
+const STATUS_BG: Record<string, string> = {
     pending: 'bg-app-warning',
     delivered: 'bg-app-success',
     failed: 'bg-app-danger',
 };
 
-const STATUS_TEXT: Record<Status, string> = {
-    pending: 'text-app-warning',
-    delivered: 'text-app-success',
-    failed: 'text-app-danger',
+type Props = {
+    item: DeliveryItem;
+    onPress?: () => void;
 };
 
-export default function DeliveryCard({ item }: Props) {
+
+const DeliveryCard = memo(({ item, onPress }: Props) => {
     const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handlePress = useCallback(() => {
+        dispatch(setSelectedDelivery(item));
+        onPress?.();
+    }, [item]);
 
     return (
-        <Pressable onPress={() => router.push(`/(user)/delivery/${item.id}`)}>
+        <Pressable
+            onPress={handlePress}
+        >
             <Box className="bg-app-surface rounded-2xl p-4 mb-3">
                 <HStack className="justify-between items-start">
                     <VStack className="flex-1 gap-1 pr-3">
@@ -55,7 +55,7 @@ export default function DeliveryCard({ item }: Props) {
                     </VStack>
 
                     <Box className={`${STATUS_BG[item.status]} rounded-lg px-3 py-1`}>
-                        <Text className={"text-xs font-bold uppercase"}>
+                        <Text className="text-app-text-primary text-xs font-bold uppercase">
                             {item.status}
                         </Text>
                     </Box>
@@ -63,4 +63,6 @@ export default function DeliveryCard({ item }: Props) {
             </Box>
         </Pressable>
     );
-}
+});
+
+export default DeliveryCard;

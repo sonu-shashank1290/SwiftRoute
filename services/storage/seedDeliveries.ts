@@ -19,8 +19,8 @@ export async function seedDeliveries() {
         item.recipient  = `Recipient ${i + 1}`;
         item.address    = `${i + 1} Main St, City ${(i % 50) + 1}`;
         item.status     = STATUSES[i % 3];
-        item.latitude   = BASE_LAT + (Math.random() - 0.5) * 0.5;
-        item.longitude  = BASE_LNG + (Math.random() - 0.5) * 0.5;
+        item.latitude   = BASE_LAT + Math.random() * 0.5;
+        item.longitude  = BASE_LNG + Math.random()  * 0.5;
         item.sequence   = i + 1;
         item.userId     = 'USER-001';
         item.tripId     = `TRIP-${String(Math.floor(i / 50) + 1).padStart(3, '0')}`;

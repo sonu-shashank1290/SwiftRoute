@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-type Role = 'user' | 'driver';
+import type { Role } from '@/types/delivery';
 
 type AuthState = {
     isAuthenticated: boolean;
