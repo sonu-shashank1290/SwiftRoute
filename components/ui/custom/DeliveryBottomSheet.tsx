@@ -11,20 +11,10 @@ import { HStack } from '../hstack';
 import { VStack } from '../vstack';
 import type { AppDispatch, RootState } from '../../../store';
 import type { Status } from '../../../types/delivery';
+import { STATUS_COLORS } from '@/constants/utils';
 
 const STATUSES: Status[] = ['pending', 'delivered', 'failed'];
 
-const STATUS_BG: Record<Status, string> = {
-    pending: 'bg-app-warning',
-    delivered: 'bg-app-success',
-    failed: 'bg-app-danger',
-};
-
-const STATUS_ACTIVE: Record<Status, string> = {
-    pending: 'bg-app-warning',
-    delivered: 'bg-app-success',
-    failed: 'bg-app-danger',
-};
 
 type Props = {
     showStatusUpdate?: boolean;
@@ -70,7 +60,7 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
                                 {item.trackingId}
                             </Text>
                         </VStack>
-                        <Box className={`${STATUS_BG[item.status as Status]} rounded-lg px-3 py-1`}>
+                        <Box className={`${STATUS_COLORS[item.status as Status]} rounded-lg px-3 py-1`}>
                             <Text className="text-app-text-primary text-xs font-bold uppercase">
                                 {item.status}
                             </Text>
@@ -103,7 +93,7 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
                                         key={s}
                                         onPress={() => handleStatusChange(s)}
                                         className={`flex-1 py-3 rounded-xl items-center border border-app-border
-                      ${item.status === s ? STATUS_ACTIVE[s] : 'bg-app-bg'}`}
+                      ${item.status === s ? STATUS_COLORS[s] : 'bg-app-bg'}`}
                                     >
                                         <Text className={`text-xs font-bold capitalize
                       ${item.status === s ? 'text-app-text-primary' : 'text-app-text-muted'}`}>

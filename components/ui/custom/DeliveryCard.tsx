@@ -9,12 +9,7 @@ import type { DeliveryItem } from '@/types/delivery';
 import { setSelectedDelivery } from '@/store/deliverySlice';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/store';
-
-const STATUS_BG: Record<string, string> = {
-    pending: 'bg-app-warning',
-    delivered: 'bg-app-success',
-    failed: 'bg-app-danger',
-};
+import { STATUS_COLORS } from '@/constants/utils';
 
 type Props = {
     item: DeliveryItem;
@@ -66,7 +61,7 @@ const DeliveryCard = memo(({ item, variant = "user", onPress }: Props) => {
                         )}
                     </VStack>
 
-                    <Box className={`${STATUS_BG[item.status]} rounded-lg px-3 py-1`}>
+                    <Box className={`${STATUS_COLORS[item.status]} rounded-lg px-3 py-1`}>
                         <Text className="text-app-text-primary text-xs font-bold uppercase">
                             {item.status}
                         </Text>
