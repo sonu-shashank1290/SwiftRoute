@@ -18,11 +18,12 @@ const STATUS_BG: Record<string, string> = {
 
 type Props = {
     item: DeliveryItem;
+    variant?: 'user' | 'driver';
     onPress?: () => void;
 };
 
 
-const DeliveryCard = memo(({ item, onPress }: Props) => {
+const DeliveryCard = memo(({ item, variant = "user", onPress }: Props) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
 
@@ -47,11 +48,22 @@ const DeliveryCard = memo(({ item, onPress }: Props) => {
                         <Text className="text-app-text-muted text-xs">
                             {item.address}
                         </Text>
-                        {item.tripId ? (
+                        {variant === 'driver' && (
+                            <HStack className="gap-2 mt-1">
+                                <Text className="text-app-brand text-xs">
+                                    Stop #{item.sequence}
+                                </Text>
+                                <Text className="text-app-text-muted text-xs">·</Text>
+                                <Text className="text-app-brand text-xs">
+                                    {item.tripId}
+                                </Text>
+                            </HStack>
+                        )}
+                        {variant === 'user' && item.tripId && (
                             <Text className="text-app-brand text-xs mt-1">
                                 {item.tripId}
                             </Text>
-                        ) : null}
+                        )}
                     </VStack>
 
                     <Box className={`${STATUS_BG[item.status]} rounded-lg px-3 py-1`}>

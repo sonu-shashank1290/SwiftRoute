@@ -24,6 +24,7 @@ export const schema = appSchema({
                 { name: 'sequence', type: 'number', isOptional: true },
                 { name: 'trip_id', type: 'string', isOptional: true },
                 { name: 'user_id', type: 'string' },
+                { name: 'driver_id', type: 'string' },
                 { name: 'created_at', type: 'number' },
             ],
         }),

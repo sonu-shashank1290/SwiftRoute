@@ -12,6 +12,7 @@ export type DeliveryItem = {
   sequence?: number;
   tripId?: string;
   userId: string;
+  driverId?: string;
 };
 
 export type LocationLog = {
@@ -28,3 +29,5 @@ export type User = {
   email: string;
   role: Role;
 };
+
+export type FilterType = 'all' | Status;

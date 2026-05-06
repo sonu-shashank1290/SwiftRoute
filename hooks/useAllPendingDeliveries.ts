@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { DeliveryItem as DeliveryModel } from '@/services/storage/models/DeliveryItem';
 import { Q } from "@nozbe/watermelondb";
 
-export function useAllDeliveries() {
+export function useAllPendingDeliveries() {
   const userId = useSelector((s: RootState) => s.auth.id);
   const [items, setItems] = useState<DeliveryItem[]>([]);
 
@@ -17,6 +17,7 @@ export function useAllDeliveries() {
       .get<DeliveryModel>('delivery_items')
       .query(
         Q.where('user_id', userId),
+        Q.where('status', 'pending'),
         Q.sortBy('sequence', Q.asc),
       )
       .observe()

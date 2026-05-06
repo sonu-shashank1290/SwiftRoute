@@ -63,7 +63,6 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
             >
                 <BottomSheetView style={{ flex: 1, paddingHorizontal: 16, paddingTop: 8, paddingBottom: 24 }}>
 
-                    {/* Header */}
                     <HStack className="justify-between items-center mb-4">
                         <VStack>
                             <Text className="text-app-text-muted text-xs tracking-widest">TRACKING</Text>
@@ -78,7 +77,6 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
                         </Box>
                     </HStack>
 
-                    {/* Info */}
                     <Box className="bg-app-bg rounded-2xl p-4 mb-4">
                         {[
                             { label: 'Recipient', value: item.recipient },

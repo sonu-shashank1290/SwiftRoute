@@ -13,5 +13,6 @@ export class DeliveryItem extends Model {
     @field('sequence') sequence?: number;
     @field('trip_id') tripId?: string;
     @field('user_id') userId!: string;
-    @readonly @date('created_at') createdAt!: Date;
+    @field('driver_id') driverId?: string;
+    @readonly @date('created_at') createdAt!: string;
 }

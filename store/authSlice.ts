@@ -7,6 +7,7 @@ type AuthState = {
     name: string | null;
     email: string | null;
     role: Role | null;
+    activeTripId: string | null;
 };
 
 const initialState: AuthState = {
@@ -15,6 +16,7 @@ const initialState: AuthState = {
     name: null,
     email: null,
     role: null,
+    activeTripId: null,
 };
 
 const authSlice = createSlice({
@@ -29,14 +31,16 @@ const authSlice = createSlice({
             state.role = action.payload.role;
         },
         logout(state) {
-            state.isAuthenticated = false;
-            state.id = null;
-            state.name = null;
-            state.email = null;
-            state.role = null;
+            return { ...initialState };
+        },
+        setActiveTripId(state, action: PayloadAction<string | null>) {
+            state.activeTripId = action.payload;
+        },
+        endTrip(state) {
+            state.activeTripId = null;
         },
     }
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setActiveTripId, endTrip } = authSlice.actions;
 export default authSlice.reducer;

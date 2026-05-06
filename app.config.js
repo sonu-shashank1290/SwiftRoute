@@ -34,7 +34,10 @@ export default {
       },
       "permissions": [
         "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION"
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_LOCATION"
       ],
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
@@ -54,8 +57,17 @@ export default {
         {
           locationAlwaysAndWhenInUsePermission:
             "Allow SwiftRoute to use your location.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
         },
       ],
-    ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#6366f1"
+        }
+      ]
+    ]
   },
 };

@@ -40,6 +40,7 @@ export function useDeliveries() {
           sequence: r.sequence,
           tripId: r.tripId,
           userId: r.userId,
+          driverId: r.driverId,
         }));
         dispatch(setItems(page === 0 ? mapped : [...items, ...mapped]));
         dispatch(setLoading(false));

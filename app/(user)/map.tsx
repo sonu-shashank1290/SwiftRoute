@@ -1,5 +1,5 @@
 import { useRef, useCallback, useMemo, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Marker, Region } from 'react-native-maps';
 import MapView from 'react-native-map-clustering';
@@ -13,7 +13,7 @@ import { Box } from '@/components/ui/box';
 import DeliveryBottomSheet from '@/components/ui/custom/DeliveryBottomSheet';
 import type { AppDispatch, RootState } from '@/store';
 import type { DeliveryItem } from '@/types/delivery';
-import { useAllDeliveries } from '@/hooks/useAllDeliveries';
+import { useAllPendingDeliveries } from '@/hooks/useAllPendingDeliveries';
 
 const FALLBACK_REGION: Region = {
   latitude: 12.9716,
@@ -24,7 +24,7 @@ const FALLBACK_REGION: Region = {
 
 export default function UserMap() {
   const dispatch = useDispatch<AppDispatch>();
-  const items = useAllDeliveries().filter(i => i.status === 'pending');
+  const items = useAllPendingDeliveries();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [region, setRegion] = useState<Region | null>(null);
 
@@ -64,20 +64,21 @@ export default function UserMap() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#0f0f14' }}>
-        <Box className="px-4 pt-2 pb-3 bg-app-bg">
+        <Box className="px-4 pt-2 pb-3 bg-app-bg z-10">
           <Text className="text-app-text-muted text-xs tracking-widest">SWIFTROUTE</Text>
           <Text className="text-app-text-primary text-2xl font-bold">Map</Text>
         </Box>
-
-        <MapView
-          style={StyleSheet.absoluteFillObject}
-          initialRegion={region ?? FALLBACK_REGION}
-          showsUserLocation
-          showsMyLocationButton
-          customMapStyle={darkMapStyle}
-        >
-          {markers}
-        </MapView>
+        <View style={{ flex: 1 }}>
+          <MapView
+            style={StyleSheet.absoluteFillObject}
+            initialRegion={region ?? FALLBACK_REGION}
+            showsUserLocation
+            showsMyLocationButton
+            customMapStyle={darkMapStyle}
+          >
+            {markers}
+          </MapView>
+        </View>
 
         <DeliveryBottomSheet ref={bottomSheetRef} />
 
