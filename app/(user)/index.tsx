@@ -1,14 +1,15 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
-import { Pressable, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { setFilter } from '@/store/deliverySlice';
 import { useDeliveries } from '@/hooks/useDeliveries';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
+import { Pressable } from '@/components/ui/pressable';
 import DeliveryCard from '@/components/ui/custom/DeliveryCard';
 import type { AppDispatch, RootState } from '@/store';
 import type { DeliveryItem } from '@/types/delivery';
@@ -16,14 +17,11 @@ import DeliveryBottomSheet from '@/components/ui/custom/DeliveryBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FILTERS, FILTER_ACTIVE } from '@/constants/utils';
-
-
-
+import DashboardHeader from '@/components/ui/custom/DashboardHeader';
 
 export default function UserDashboard() {
     const { items, resetPage, loading, loadMore } = useDeliveries();
     const { filter } = useSelector((s: RootState) => s.deliveries);
-    const name = useSelector((s: RootState) => s.auth.name);
     const dispatch = useDispatch<AppDispatch>();
 
     const bottomSheetRef = useRef<BottomSheet>(null);
@@ -34,21 +32,11 @@ export default function UserDashboard() {
 
     const keyExtractor = useCallback((item: DeliveryItem) => item.id, []);
 
-
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <SafeAreaView className="flex-1 bg-app-bg">
                 <VStack className="flex-1 px-4">
-
-                    <HStack className="justify-between items-center py-4">
-                        <VStack>
-                            <Text className="text-app-text-muted text-xs tracking-widest">SWIFTROUTE</Text>
-                            <Text className="text-app-text-primary text-2xl font-bold">
-                                Hey, {name?.split(' ')[0]} 👋
-                            </Text>
-                        </VStack>
-                    </HStack>
-
+                    <DashboardHeader />
                     <HStack className="gap-2 mb-4">
                         {FILTERS.map(f => (
                             <Pressable

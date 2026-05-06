@@ -18,6 +18,7 @@ import { VStack } from '@/components/ui/vstack';
 import { Pressable } from '@/components/ui/pressable';
 import DeliveryCard from '@/components/ui/custom/DeliveryCard';
 import DeliveryBottomSheet from '@/components/ui/custom/DeliveryBottomSheet';
+import DashboardHeader from '@/components/ui/custom/DashboardHeader';
 
 import type { AppDispatch, RootState } from '@/store';
 import type { DeliveryItem } from '@/types/delivery';
@@ -28,7 +29,6 @@ export default function DriverDashboard() {
   const dispatch = useDispatch<AppDispatch>();
 
   const filter = useSelector((s: RootState) => s.deliveries.filter);
-  const name = useSelector((s: RootState) => s.auth.name);
   const activeTripId = useSelector((s: RootState) => s.auth.activeTripId);
 
   const [selectedTrip, setSelectedTrip] = useState<string | undefined>(undefined);
@@ -69,16 +69,7 @@ export default function DriverDashboard() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView className="flex-1 bg-app-bg">
         <VStack className="flex-1 px-4">
-
-          <HStack className="justify-between items-center py-4">
-            <VStack>
-              <Text className="text-app-text-muted text-xs tracking-widest uppercase">SwiftRoute</Text>
-              <Text className="text-app-text-primary text-2xl font-bold">
-                Hey, {name?.split(' ')[0]} 👋
-              </Text>
-            </VStack>
-          </HStack>
-
+          <DashboardHeader />
           <Box className="mb-6">
             <Text className="text-app-text-secondary text-xs font-semibold mb-3 uppercase ml-1">Select Route</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
