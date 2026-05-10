@@ -74,12 +74,13 @@ export default function UserMap() {
             initialRegion={region ?? FALLBACK_REGION}
             showsUserLocation
             showsMyLocationButton
+            loadingEnabled
             customMapStyle={darkMapStyle}
           >
             {markers}
           </MapView>
         </View>
-
+        
         <DeliveryBottomSheet ref={bottomSheetRef} />
 
       </SafeAreaView>

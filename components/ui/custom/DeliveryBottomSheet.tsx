@@ -69,7 +69,6 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
 
                     <Box className="bg-app-bg rounded-2xl p-4 mb-4">
                         {[
-                            { label: 'Recipient', value: item.recipient },
                             { label: 'Address', value: item.address },
                             { label: 'Trip', value: item.tripId },
                             { label: 'Stop', value: `#${item.sequence}` },

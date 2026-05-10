@@ -32,15 +32,14 @@ export function useDeliveries() {
         const mapped: DeliveryItem[] = rows.map((r): DeliveryItem => ({
           id: r.id,
           trackingId: r.trackingId,
-          recipient: r.recipient,
-          address: r.address,
           status: r.status as Status,
-          latitude: r.latitude,
-          longitude: r.longitude,
           sequence: r.sequence,
           tripId: r.tripId,
           userId: r.userId,
+          address: r.address,
           driverId: r.driverId,
+          latitude: r.latitude,
+          longitude: r.longitude,
         }));
         dispatch(setItems(page === 0 ? mapped : [...items, ...mapped]));
         dispatch(setLoading(false));

@@ -1,33 +1,43 @@
 export type Status = 'pending' | 'delivered' | 'failed';
+export type TripStatus = 'active' | 'completed' | 'cancelled';
 export type Role = 'user' | 'driver';
 
-export type DeliveryItem = {
-  id: string;
-  trackingId: string;
-  recipient: string;
-  address: string;
+export interface DeliveryItem {
+  readonly id: string;
+  readonly trackingId: string;
+  readonly address: string;
   status: Status;
-  latitude: number;
-  longitude: number;
-  sequence?: number;
-  tripId?: string;
-  userId: string;
-  driverId?: string;
-};
+  readonly latitude: number;
+  readonly longitude: number;
+  readonly sequence: number;
+  readonly tripId: string;
+  readonly userId: string;
+  readonly driverId?: string;
+}
 
-export type LocationLog = {
-  id: string;
-  latitude: number;
-  longitude: number;
-  timestamp: number;
-  tripId: string;
-};
+export interface Trip {
+  readonly id: string;
+  readonly driverId: string;
+  status: TripStatus;
+  readonly startedAt: number;
+  endedAt: number | null | undefined;
+  isOffRoute: boolean;
+}
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  role: Role;
-};
+export interface LocationLog {
+  readonly id: string;
+  readonly latitude: number;
+  readonly longitude: number;
+  readonly timestamp: number;
+  readonly tripId: string;
+}
 
-export type FilterType = 'all' | Status;
+export interface User {
+  readonly id: string;
+  readonly name: string;
+  readonly email: string;
+  readonly role: Role;
+  readonly address: string;
+  readonly latitude: number;
+  readonly longitude: number;
+}

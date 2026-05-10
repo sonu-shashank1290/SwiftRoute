@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { DeliveryItem, Status } from '@/types/delivery';
+import type { DeliveryItem, FilterType, Status } from '@/types/delivery';
 
 type deliveryState = {
     items: DeliveryItem[];
-    filter: 'all' | Status;
+    filter: FilterType;
     loading: boolean;
     selectedDelivery: DeliveryItem | null;
 }
@@ -23,7 +23,7 @@ const deliverySlice = createSlice({
         setItems(state, action: PayloadAction<DeliveryItem[]>) {
             state.items = action.payload;
         },
-        setFilter(state, action: PayloadAction<deliveryState['filter']>) {
+        setFilter(state, action: PayloadAction<FilterType>) {
             state.filter = action.payload;
         },
         setLoading(state, action: PayloadAction<boolean>) {

@@ -6,6 +6,9 @@ export class User extends Model {
 
     @field('name') name!: string;
     @field('email') email!: string;
+    @field('address') address!: string;
+    @field('latitude') latitude!: number;
+    @field('longitude') longitude!: number;
     @field('role') role!: string;
     @readonly @date('created_at') createdAt!: Date;
 }

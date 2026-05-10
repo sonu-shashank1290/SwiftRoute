@@ -6,6 +6,6 @@ export class LocationLog extends Model {
 
   @field('latitude') latitude!: number;
   @field('longitude') longitude!: number;
-  @date('timestamp') timestamp!: string;
+  @date('timestamp') timestamp!: number;
   @field('trip_id') tripId!: string;
 }

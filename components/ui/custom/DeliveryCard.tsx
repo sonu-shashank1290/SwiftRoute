@@ -1,6 +1,5 @@
 import { memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
-import { useRouter } from 'expo-router';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
@@ -19,7 +18,6 @@ type Props = {
 
 
 const DeliveryCard = memo(({ item, variant = "user", onPress }: Props) => {
-    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
 
     const handlePress = useCallback(() => {
@@ -37,23 +35,6 @@ const DeliveryCard = memo(({ item, variant = "user", onPress }: Props) => {
                         <Text className="text-app-text-primary font-bold text-base">
                             {item.trackingId}
                         </Text>
-                        <Text className="text-app-text-secondary text-sm">
-                            {item.recipient}
-                        </Text>
-                        <Text className="text-app-text-muted text-xs">
-                            {item.address}
-                        </Text>
-                        {variant === 'driver' && (
-                            <HStack className="gap-2 mt-1">
-                                <Text className="text-app-brand text-xs">
-                                    Stop #{item.sequence}
-                                </Text>
-                                <Text className="text-app-text-muted text-xs">·</Text>
-                                <Text className="text-app-brand text-xs">
-                                    {item.tripId}
-                                </Text>
-                            </HStack>
-                        )}
                         {variant === 'user' && item.tripId && (
                             <Text className="text-app-brand text-xs mt-1">
                                 {item.tripId}

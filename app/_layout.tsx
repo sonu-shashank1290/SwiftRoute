@@ -5,10 +5,9 @@ import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '@/store';
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
-import { seedUsers } from '@/services/storage/seedUsers';
-import { seedDeliveries } from '@/services/storage/seedDeliveries';
 import type { RootState } from '@/store';
 import { ActivityIndicator } from 'react-native';
+import { seedDatabase } from '@/services/storage/seed';
 
 function RouteGuard() {
   const router = useRouter();
@@ -35,8 +34,7 @@ function RouteGuard() {
 
 export default function RootLayout() {
   useEffect(() => {
-    seedUsers();
-    seedDeliveries();
+    seedDatabase();
   }, []);
 
   return (

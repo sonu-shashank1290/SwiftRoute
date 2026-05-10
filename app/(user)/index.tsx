@@ -16,8 +16,16 @@ import type { DeliveryItem } from '@/types/delivery';
 import DeliveryBottomSheet from '@/components/ui/custom/DeliveryBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { FILTERS, FILTER_ACTIVE } from '@/constants/utils';
 import DashboardHeader from '@/components/ui/custom/DashboardHeader';
+
+const FILTERS = ['all', 'pending', 'delivered', 'failed'] as const;
+
+const FILTER_ACTIVE: Record<string, string> = {
+    all: 'bg-app-brand',
+    pending: 'bg-app-warning',
+    delivered: 'bg-app-success',
+    failed: 'bg-app-danger',
+};
 
 export default function UserDashboard() {
     const { items, resetPage, loading, loadMore } = useDeliveries();
@@ -47,6 +55,7 @@ export default function UserDashboard() {
                                 }}
                                 className={`flex-1 py-2 rounded-xl items-center ${filter === f ? FILTER_ACTIVE[f] : 'bg-app-surface'}`}
                             >
+
                                 <Text className={`text-xs font-semibold capitalize ${filter === f ? 'text-app-text-primary' : 'text-app-text-muted'}`}>
                                     {f}
                                 </Text>
@@ -64,7 +73,7 @@ export default function UserDashboard() {
                             keyExtractor={keyExtractor}
                             renderItem={renderItem}
                             onEndReached={loadMore}
-                            onEndReachedThreshold={0.5}
+                            onEndReachedThreshold={0.1}
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={{ paddingBottom: 20 }}
                         />

@@ -25,7 +25,6 @@ export function useAllPendingDeliveries() {
         setItems(rows.map(r => ({
           id: r.id,
           trackingId: r.trackingId,
-          recipient: r.recipient,
           address: r.address,
           status: r.status as Status,
           latitude: r.latitude,
