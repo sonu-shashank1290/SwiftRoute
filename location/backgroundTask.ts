@@ -1,8 +1,8 @@
 import * as TaskManager from 'expo-task-manager';
 import * as Location from 'expo-location';
 import * as SecureStore from 'expo-secure-store';
-import { database } from '@/services/storage/database';
-import { LocationLog } from '@/services/storage/models/LocationLog';
+import { database } from '@/storage/database';
+import { LocationLog } from '@/storage/models/LocationLog';
 
 export const LOCATION_TASK = 'background-location-task';
 

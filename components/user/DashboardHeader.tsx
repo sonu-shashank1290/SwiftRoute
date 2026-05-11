@@ -2,12 +2,12 @@ import { memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'expo-router';
 import { Alert } from 'react-native';
-import { logout } from '../../../store/authSlice';
-import { HStack } from '../hstack';
-import { VStack } from '../vstack';
-import { Text } from '../text';
-import { Pressable } from '../pressable';
-import type { RootState, AppDispatch } from '../../../store';
+import { logout } from '@/store/authSlice';
+import { HStack } from '@/components/ui/hstack';
+import { VStack } from '@/components/ui/vstack';
+import { Text } from '@/components/ui/text';
+import { Pressable } from '@/components/ui/pressable';
+import type { RootState, AppDispatch } from '@/store';
 
 const DashboardHeader = memo(() => {
     const dispatch = useDispatch<AppDispatch>();

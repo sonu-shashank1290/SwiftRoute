@@ -10,10 +10,10 @@ import * as Location from 'expo-location';
 import { setSelectedDelivery } from '@/store/deliverySlice';
 import { Text } from '@/components/ui/text';
 import { Box } from '@/components/ui/box';
-import DeliveryBottomSheet from '@/components/ui/custom/DeliveryBottomSheet';
+import DeliveryBottomSheet from '@/components/common/DeliveryBottomSheet';
 import type { AppDispatch, RootState } from '@/store';
-import type { DeliveryItem } from '@/types/delivery';
-import { useAllPendingDeliveries } from '@/hooks/useAllPendingDeliveries';
+import type { DeliveryItem } from '@/types/delivery/delivery';
+import { useAllPendingDeliveries } from '@/hooks/user/useAllPendingDeliveries';
 
 const FALLBACK_REGION: Region = {
   latitude: 12.9716,

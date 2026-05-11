@@ -61,17 +61,17 @@ const TRIP_DEFS: TripDef[] = [
 ];
 
 function randomNearbyLocation() {
-  const baseLat = 12.910384;
-  const baseLng = 77.601579;
+    const baseLat = 12.910384;
+    const baseLng = 77.601579;
 
-  // ~ up to 8-10km spread
-  const latOffset = (Math.random() - 0.5) * 0.12;
-  const lngOffset = (Math.random() - 0.5) * 0.12;
+    // ~ up to 8-10km spread
+    const latOffset = (Math.random() - 0.5) * 0.12;
+    const lngOffset = (Math.random() - 0.5) * 0.12;
 
-  return {
-    latitude: baseLat + latOffset,
-    longitude: baseLng + lngOffset,
-  };
+    return {
+        latitude: baseLat + latOffset,
+        longitude: baseLng + lngOffset,
+    };
 }
 
 function itemStatus(

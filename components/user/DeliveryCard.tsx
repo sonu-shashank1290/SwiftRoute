@@ -4,7 +4,7 @@ import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
-import type { DeliveryItem } from '@/types/delivery';
+import type { DeliveryItem } from '@/types/delivery/delivery';
 import { setSelectedDelivery } from '@/store/deliverySlice';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/store';

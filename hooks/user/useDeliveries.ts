@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { database } from '@/services/storage/database';
-import { DeliveryItem as DeliveryModel } from '@/services/storage/models/DeliveryItem';
+import { database } from '@/storage/database';
+import { DeliveryItem as DeliveryModel } from '@/storage/models/DeliveryItem';
 import { setItems, setLoading } from '@/store/deliverySlice';
 import type { AppDispatch, RootState } from '@/store';
-import type { DeliveryItem, Status } from '@/types/delivery';
+import type { DeliveryItem, Status } from '@/types/delivery/delivery';
 
 const PAGE_LIMIT = 20;
 

@@ -1,16 +1,16 @@
 import { forwardRef, useCallback } from 'react';
-import { Pressable } from '../pressable';
+import { Pressable } from '../ui/pressable';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
-import { database } from '../../../services/storage/database';
-import { DeliveryItem as DeliveryModel } from '../../../services/storage/models/DeliveryItem';
-import { updateStatus, setSelectedDelivery } from '../../../store/deliverySlice';
-import { Box } from '../box';
-import { Text } from '../text';
-import { HStack } from '../hstack';
-import { VStack } from '../vstack';
-import type { AppDispatch, RootState } from '../../../store';
-import type { Status } from '../../../types/delivery';
+import { database } from '@/storage/database';
+import { DeliveryItem as DeliveryModel } from '@/storage/models/DeliveryItem';
+import { updateStatus, setSelectedDelivery } from '../../store/deliverySlice';
+import { Box } from '../ui/box';
+import { Text } from '../ui/text';
+import { HStack } from '../ui/hstack';
+import { VStack } from '../ui/vstack';
+import type { AppDispatch, RootState } from '../../store';
+import type { Status } from '../../types/delivery/delivery';
 import { STATUS_COLORS } from '@/constants/utils';
 
 const STATUSES: Status[] = ['pending', 'delivered', 'failed'];
@@ -46,6 +46,7 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
             <BottomSheet
                 ref={ref}
                 index={-1}
+                snapPoints={['45%']}
                 enablePanDownToClose
                 onClose={handleClose}
                 backgroundStyle={{ backgroundColor: '#1e1e2e' }}

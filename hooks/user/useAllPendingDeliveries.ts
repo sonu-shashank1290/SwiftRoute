@@ -1,9 +1,9 @@
-import { database } from "@/services/storage/database";
+import { database } from "@/storage/database";
 import type { RootState } from "@/store";
-import { DeliveryItem, Status } from "@/types/delivery";
+import { DeliveryItem, Status } from "@/types/delivery/delivery";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { DeliveryItem as DeliveryModel } from '@/services/storage/models/DeliveryItem';
+import { DeliveryItem as DeliveryModel } from '@/storage/models/DeliveryItem';
 import { Q } from "@nozbe/watermelondb";
 
 export function useAllPendingDeliveries() {

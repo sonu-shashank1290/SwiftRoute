@@ -3,11 +3,12 @@ import { TextInput, ActivityIndicator, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { login } from '@/store/authSlice';
-import { MOCK_USERS } from '@/constants/mockUsers';
+import { MOCK_USERS } from '@/constants/utils';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { Input, InputField } from '@/components/ui/input';
 import { AppDispatch } from '@/store';
+import type { Role } from '@/types/user/user';
 
 
 export default function Login() {
@@ -32,7 +33,7 @@ export default function Login() {
       return;
     }
 
-    dispatch(login({ id: found.id, name: found.name, email: found.email, role: found.role }));
+    dispatch(login({ id: found.id, name: found.name, email: found.email, role: found.role as Role }));
   };
 
   return (

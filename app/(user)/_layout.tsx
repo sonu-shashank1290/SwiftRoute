@@ -1,7 +1,16 @@
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 export default function UserLayout() {
+  const { isAuthenticated, role } =
+    useSelector((s: RootState) => s.auth);
+
+  if (!isAuthenticated) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
   return (
     <Tabs screenOptions={{
       headerShown: false,

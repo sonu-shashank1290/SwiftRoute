@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { DeliveryItem, FilterType, Status } from '@/types/delivery';
+import type { DeliveryItem, FilterType, Status } from '@/types/delivery/delivery';
 
 type deliveryState = {
     items: DeliveryItem[];

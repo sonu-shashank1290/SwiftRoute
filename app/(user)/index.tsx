@@ -4,19 +4,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { ActivityIndicator } from 'react-native';
 import { setFilter } from '@/store/deliverySlice';
-import { useDeliveries } from '@/hooks/useDeliveries';
+import { useDeliveries } from '@/hooks/user/useDeliveries';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { HStack } from '@/components/ui/hstack';
 import { VStack } from '@/components/ui/vstack';
 import { Pressable } from '@/components/ui/pressable';
-import DeliveryCard from '@/components/ui/custom/DeliveryCard';
+import DeliveryCard from '@/components/user/DeliveryCard';
 import type { AppDispatch, RootState } from '@/store';
-import type { DeliveryItem } from '@/types/delivery';
-import DeliveryBottomSheet from '@/components/ui/custom/DeliveryBottomSheet';
+import type { DeliveryItem } from '@/types/delivery/delivery';
+import DeliveryBottomSheet from '@/components/common/DeliveryBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import DashboardHeader from '@/components/ui/custom/DashboardHeader';
+import DashboardHeader from '@/components/user/DashboardHeader';
 
 const FILTERS = ['all', 'pending', 'delivered', 'failed'] as const;
 
