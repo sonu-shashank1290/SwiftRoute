@@ -9,8 +9,8 @@ type Props = {
 export default function TripControls({ onEndTrip }: Props) {
   return (
     <Box style={{
-      position: 'absolute', bottom: 100,
-      left: 16, right: 16, zIndex: 10,
+      position: 'absolute', bottom: 20,
+      left: 16, right: 16, zIndex: 1
     }}>
       <Pressable
         onPress={onEndTrip}

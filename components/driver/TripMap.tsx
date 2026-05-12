@@ -3,8 +3,8 @@ import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import MapViewClustering from 'react-native-map-clustering';
 import { darkMapStyle } from '@/constants/utils';
-import type { DeliveryItem } from '@/types/delivery';
-import React from 'react';
+import type { DeliveryItem } from '@/types/delivery/delivery';
+import React, { memo, useMemo } from 'react';
 
 type Coords = { latitude: number; longitude: number };
 
@@ -17,7 +17,7 @@ type Props = {
     onRouteReady: (result: any) => void;
 };
 
-export default function TripMap({
+const TripMap = memo(function TripMap({
     mapRef,
     sortedStops,
     routeCoords,
@@ -25,25 +25,26 @@ export default function TripMap({
     markers,
     onRouteReady,
 }: Props) {
-    const handleRouteReady = (result: any) => {
+    const handleRouteReady = React.useCallback((result: any) => {
+        console.log(result.coordinates);
         onRouteReady(result);
-    };
+    }, [onRouteReady]);
+
+    const initialRegion = useMemo(() => ({
+        latitude: sortedStops[0]?.latitude ?? 12.9716,
+        longitude: sortedStops[0]?.longitude ?? 77.5946,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1,
+    }), [sortedStops]);
 
     return (
         <View style={{ flex: 1 }}>
-            <MapViewClustering
+            <MapView
                 ref={mapRef}
                 style={StyleSheet.absoluteFillObject}
-                initialRegion={{
-                    latitude: sortedStops[0]?.latitude ?? 12.9716,
-                    longitude: sortedStops[0]?.longitude ?? 77.5946,
-                    latitudeDelta: 0.1,
-                    longitudeDelta: 0.1,
-                }}
+                initialRegion={initialRegion}
                 customMapStyle={darkMapStyle}
                 showsUserLocation
-                clusterColor="#6366f1"
-                clusterTextColor="#ffffff"
             >
                 {markers}
 
@@ -70,7 +71,9 @@ export default function TripMap({
                         }} />
                     </Marker>
                 )}
-            </MapViewClustering>
+            </MapView>
         </View>
     );
-}
+});
+
+export default TripMap;

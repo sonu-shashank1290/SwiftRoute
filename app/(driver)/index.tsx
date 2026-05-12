@@ -25,7 +25,7 @@ import { getDistance } from '@/constants/utils';
 type Coords = { latitude: number; longitude: number };
 
 const ARRIVAL_THRESHOLD = 100; 
-const OFFROUTE_THRESHOLD = 100;
+const OFFROUTE_THRESHOLD = 150;
 
 export default function DriverIndex() {
   const dispatch = useDispatch<AppDispatch>();
@@ -80,7 +80,6 @@ export default function DriverIndex() {
         }
       } catch (error) {
         console.error('Error loading trips:', error);
-        // Handle error, perhaps show alert
       } finally {
         setLoading(false);
       }
@@ -172,7 +171,9 @@ export default function DriverIndex() {
   }, [dispatch]);
 
   const handleRouteReady = useCallback((result: any) => {
-    setRoutePoints(result.coordinates);
+    if (result.coordinates && result.coordinates.length > 0) {
+      setRoutePoints(result.coordinates);
+    }
   }, []);
 
   if (activeTripId) {

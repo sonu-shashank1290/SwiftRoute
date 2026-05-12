@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { Text } from '@/components/ui/text';
+import { memo } from 'react';
 import type { DeliveryItem } from '@/types/delivery/delivery';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -14,10 +15,10 @@ type Props = {
   onMarkerPress: (item: DeliveryItem) => void;
 };
 
-export default function TripMarkers({ sortedStops, onMarkerPress }: Props) {
+const TripMarkers = memo(function TripMarkers({ sortedStops, onMarkerPress }: Props) {
   return (
     <>
-      {sortedStops.map(item => (
+      {sortedStops.slice(0, 50).map(item => (
         <Marker
           key={item.id}
           coordinate={{ latitude: item.latitude, longitude: item.longitude }}
@@ -37,4 +38,6 @@ export default function TripMarkers({ sortedStops, onMarkerPress }: Props) {
       ))}
     </>
   );
-}
+});
+
+export default TripMarkers;

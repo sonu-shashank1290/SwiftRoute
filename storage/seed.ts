@@ -60,18 +60,38 @@ const TRIP_DEFS: TripDef[] = [
     { status: 'cancelled', startedAgo: 3 * DAY + HR, durationMs: 1 * HR },
 ];
 
-function randomNearbyLocation() {
+type LatLng = {
+    latitude: number;
+    longitude: number;
+};
+
+function generateSequentialLocations(count: number): LatLng[] {
     const baseLat = 12.910384;
     const baseLng = 77.601579;
-
-    // ~ up to 8-10km spread
-    const latOffset = (Math.random() - 0.5) * 0.12;
-    const lngOffset = (Math.random() - 0.5) * 0.12;
-
-    return {
-        latitude: baseLat + latOffset,
-        longitude: baseLng + lngOffset,
-    };
+    
+    const locations: LatLng[] = [];
+    let currentLat = baseLat;
+    let currentLng = baseLng;
+    
+    // Generate locations in a roughly northeast direction with some variation
+    const stepLat = 0.008; // ~800m north - increased for more spacing
+    const stepLng = 0.008; // ~800m east - increased for more spacing
+    
+    for (let i = 0; i < count; i++) {
+        // Add some small random variation to make it look natural
+        const jitterLat = (Math.random() - 0.5) * 0.0005;
+        const jitterLng = (Math.random() - 0.5) * 0.0005;
+        
+        currentLat += stepLat + jitterLat;
+        currentLng += stepLng + jitterLng;
+        
+        locations.push({
+            latitude: currentLat,
+            longitude: currentLng,
+        });
+    }
+    
+    return locations;
 }
 
 function itemStatus(
@@ -99,12 +119,17 @@ function itemStatus(
 }
 
 export async function seedDatabase(): Promise<void> {
-    const existing = await database
+    const existingItems = await database
         .get('delivery_items')
         .query()
         .fetchCount();
 
-    if (existing > 0) {
+    const existingUsers = await database
+        .get('users')
+        .query()
+        .fetchCount();
+
+    if (existingItems > 0 || existingUsers > 0) {
         return;
     }
 
@@ -163,10 +188,13 @@ export async function seedDatabase(): Promise<void> {
                 ? TOTAL_ITEMS - itemsWritten
                 : ITEMS_PER_TRIP;
 
+            // Generate sequential locations for this trip
+            const tripLocations = generateSequentialLocations(batchSize);
+
             for (let i = 0; i < batchSize; i++) {
                 const customer =
                     CUSTOMERS[customerToggle % CUSTOMERS.length];
-                const location = randomNearbyLocation();
+                const location = tripLocations[i];
 
                 customerToggle++;
 

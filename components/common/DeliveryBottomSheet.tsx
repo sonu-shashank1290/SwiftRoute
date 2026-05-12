@@ -51,6 +51,7 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
                 onClose={handleClose}
                 backgroundStyle={{ backgroundColor: '#1e1e2e' }}
                 handleIndicatorStyle={{ backgroundColor: '#52525b' }}
+                style={{ zIndex: 100 }}
             >
                 <BottomSheetView style={{ flex: 1, paddingHorizontal: 16, paddingTop: 8, paddingBottom: 24 }}>
 

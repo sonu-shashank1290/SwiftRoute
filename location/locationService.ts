@@ -94,6 +94,7 @@ export async function startLocationTracking(tripId: string): Promise<void> {
     },
     pausesUpdatesAutomatically: false,
     showsBackgroundLocationIndicator: true,
+
   });
 }
 
