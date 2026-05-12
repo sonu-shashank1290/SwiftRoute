@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import { database } from '@/storage/database';
 import { Trip as TripModel } from '@/storage/models/Trip';
+import { DeliveryItem as DeliveryModel } from '@/storage/models/DeliveryItem';
 import {
     requestPermissions,
     startLocationTracking,
@@ -35,7 +36,6 @@ export default function DriverIndex() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [routePoints, setRoutePoints] = useState<Coords[]>([]);
-  const [routeCoords, setRouteCoords] = useState<Coords[]>([]);
   const [showPicker, setShowPicker] = useState<boolean>(false);
 
   const driverLocation = useLiveLocation(activeTripId);
@@ -45,26 +45,21 @@ export default function DriverIndex() {
     [...items].sort((a, b) => a.sequence - b.sequence)
   , [items]);
 
-  const nextStop = sortedStops[0] ?? null;
-
-  useEffect(() => {
-    setRouteCoords(sortedStops.map(i => ({ latitude: i.latitude, longitude: i.longitude })));
-  }, [sortedStops]);
-
-  useEffect(() => {
-    setRoutePoints([]);
-  }, [routeCoords]);
+  const nextStop = useMemo(() => sortedStops[0] ?? null, [sortedStops]);
+  
+  const routeCoords = useMemo(() =>
+    sortedStops.map(i => ({ latitude: i.latitude, longitude: i.longitude }))
+  , [sortedStops]);
 
   useEffect(() => {
     if (!driverId) return;
     setLoading(true);
-    (async () => {
-      try {
-        const rows = await database
-          .get<TripModel>('trips')
-          .query(Q.where('driver_id', driverId), Q.where('status', 'active'))
-          .fetch();
-
+    
+    const subscription = database
+      .get<TripModel>('trips')
+      .query(Q.where('driver_id', driverId), Q.where('status', 'active'))
+      .observe()
+      .subscribe(rows => {
         const mapped = rows.map((t): Trip => ({
           id: t.id,
           driverId: t.driverId,
@@ -75,6 +70,7 @@ export default function DriverIndex() {
         }));
 
         setTrips(mapped);
+        setLoading(false);
 
         if (!activeTripId) {
           const first = mapped.find(t => t.status === 'active');
@@ -84,13 +80,10 @@ export default function DriverIndex() {
             setShowPicker(true);
           }
         }
-      } catch (error) {
-        console.error('Error loading trips:', error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [driverId]);
+      });
+
+    return () => subscription.unsubscribe();
+  }, [driverId, activeTripId, dispatch]);
 
   useEffect(() => {
     if (!activeTripId) return;
@@ -106,10 +99,10 @@ export default function DriverIndex() {
   }, [activeTripId]);
 
   useEffect(() => {
-    if (!driverLocation || !activeTripId) return;
+    if (!driverLocation || !activeTripId || !nextStop) return;
 
     (async () => {
-      if (routePoints.length && nextStop) {
+      if (routePoints.length > 0) {
         await checkOffRouteFromPolyline(
           driverLocation.latitude,
           driverLocation.longitude,
@@ -120,28 +113,27 @@ export default function DriverIndex() {
         );
       }
 
-      if (nextStop) {
-        const dist = getDistance(
-          driverLocation.latitude, driverLocation.longitude,
-          nextStop.latitude, nextStop.longitude,
-        );
+      const dist = getDistance(
+        driverLocation.latitude,
+        driverLocation.longitude,
+        nextStop.latitude,
+        nextStop.longitude,
+      );
 
+      if (dist < ARRIVAL_THRESHOLD) {
+        dispatch(setSelectedDelivery(nextStop));
 
-        if (dist < ARRIVAL_THRESHOLD) {
-          dispatch(setSelectedDelivery(nextStop));
-
-          await Notifications.scheduleNotificationAsync({
-            content: {
-              title: '📦 Arrived at Stop',
-              body: `Mark stop #${nextStop.sequence} as delivered?`,
-              data: { deliveryId: nextStop.id },
-            },
-            trigger: null,
-          });
-        }
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: '📦 Arrived at Stop',
+            body: `Mark stop #${nextStop.sequence} as delivered?`,
+            data: { deliveryId: nextStop.id },
+          },
+          trigger: null,
+        });
       }
     })();
-  }, [driverLocation, routePoints, nextStop, activeTripId]);
+  }, [driverLocation, routePoints, nextStop, activeTripId, dispatch]);
 
   const handleSelectTrip = useCallback((tripId: string) => {
     dispatch(setActiveTripId(tripId));
@@ -163,13 +155,47 @@ export default function DriverIndex() {
         text: 'End Trip',
         style: 'destructive',
         onPress: async () => {
-          await stopLocationTracking();
-          dispatch(endTrip());
-          setShowPicker(true);
+          try {
+            await stopLocationTracking();
+            
+            // Mark any remaining pending deliveries as failed
+            if (items.length > 0) {
+              const pendingItems = items.filter((i: DeliveryModel)  => i.status === 'pending');
+              if (pendingItems.length > 0) {
+                await database.write(async () => {
+                  for (const item of pendingItems) {
+                    const record = await database
+                      .get<DeliveryModel>('delivery_items')
+                      .find(item.id);
+                    await record.update(r => { r.status = 'failed'; });
+                  }
+                });
+              }
+            }
+
+            // Update trip status to completed
+            if (activeTripId) {
+              await database.write(async () => {
+                const trip = await database
+                  .get<TripModel>('trips')
+                  .find(activeTripId);
+                await trip.update(t => {
+                  t.status = 'completed';
+                  t.endedAt = Date.now();
+                });
+              });
+            }
+
+            dispatch(endTrip());
+            setShowPicker(true);
+          } catch (error) {
+            console.error('Error ending trip:', error);
+            Alert.alert('Error', 'Failed to end trip. Please try again.');
+          }
         },
       },
     ]);
-  }, [activeTripId]);
+  }, [activeTripId, items, dispatch]);
 
   const handleMarkerPress = useCallback((item: DeliveryItem): void => {
     dispatch(setSelectedDelivery(null));

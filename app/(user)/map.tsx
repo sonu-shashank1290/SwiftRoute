@@ -14,6 +14,7 @@ import DeliveryBottomSheet from '@/components/common/DeliveryBottomSheet';
 import type { AppDispatch, RootState } from '@/store';
 import type { DeliveryItem } from '@/types/delivery/delivery';
 import { useAllPendingDeliveries } from '@/hooks/user/useAllPendingDeliveries';
+import { darkMapStyle } from '@/constants/utils';
 
 const FALLBACK_REGION: Region = {
   latitude: 12.9716,
@@ -87,15 +88,3 @@ export default function UserMap() {
     </GestureHandlerRootView>
   );
 }
-
-const darkMapStyle = [
-  { elementType: 'geometry', stylers: [{ color: '#0f0f14' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#a1a1aa' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#0f0f14' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1e1e2e' }] },
-  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#2a2a3e' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0a0a10' }] },
-  { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-  { featureType: 'transit', stylers: [{ visibility: 'off' }] },
-  { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#2a2a3e' }] },
-];
