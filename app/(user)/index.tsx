@@ -67,7 +67,7 @@ export default function UserDashboard() {
                             <ActivityIndicator color="#6366f1" size="large" />
                         </Box>
                     ) : (
-                        <FlashList<DeliveryItem>
+                        <FlashList
                             data={items}
                             extraData={filter}
                             keyExtractor={keyExtractor}
@@ -75,7 +75,6 @@ export default function UserDashboard() {
                             onEndReached={loadMore}
                             onEndReachedThreshold={0.1}
                             showsVerticalScrollIndicator={false}
-                            contentContainerStyle={{ paddingBottom: 20 }}
                         />
                     )}
 

@@ -4,6 +4,7 @@ import { Text } from '@/components/ui/text';
 import { Spinner } from '@/components/ui/spinner';
 import TripPickerModal from './TripPickerModal';
 import type { Trip } from '@/types/driver/driver';
+import { memo } from 'react';
 
 type Props = {
   loading: boolean;
@@ -13,7 +14,7 @@ type Props = {
   onClose: () => void;
 };
 
-export default function TripSelectView({ loading, showPicker, trips, onSelect, onClose }: Props) {
+const TripSelectView = memo(({ loading, showPicker, trips, onSelect, onClose }: Props) => {
   return (
     <SafeAreaView className="flex-1 bg-app-bg justify-center items-center">
       <TripPickerModal
@@ -22,13 +23,16 @@ export default function TripSelectView({ loading, showPicker, trips, onSelect, o
         onSelect={onSelect}
         onClose={onClose}
       />
-      <Box className="items-center">
-        {loading ? (
-          <Spinner size="large" />
-        ) : (
-          <Text className="text-app-text-muted">No active trips available</Text>
-        )}
-      </Box>
+      {!showPicker && (
+        <Box className="items-center">
+          {loading ? (
+            <Spinner size="large" />
+          ) : (
+            <Text className="text-app-text-muted">No active trips available</Text>
+          )}
+        </Box>
+      )}
     </SafeAreaView>
   );
-}
+})
+export default TripSelectView;

@@ -1,6 +1,6 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import MapView from 'react-native-maps';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -13,8 +13,7 @@ import DeliveryBottomSheet from '@/components/common/DeliveryBottomSheet';
 import type { DeliveryItem } from '@/types/delivery/delivery';
 import type { Trip } from '@/types/driver/driver';
 import type { RootState } from '@/store';
-
-type Coords = { latitude: number; longitude: number };
+import type { Coords } from '@/types/driver/driver';
 
 type Props = {
   activeTripId: string;
@@ -49,28 +48,25 @@ export default function LiveTripView({
 }: Props) {
   const mapRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const selectedDelivery = useSelector((state: RootState) => state.deliveries.selectedDelivery);
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout> | null = null;
+  if (!selectedDelivery) {
+    bottomSheetRef.current?.close();
+    return;
+  }
+  
+  const id = setTimeout(() => {
+    bottomSheetRef.current?.expand();
+  }, 100);
+  
+  return () => clearTimeout(id);
+}, [selectedDelivery]);
 
-    if (selectedDelivery) {
-      timeout = setTimeout(() => {
-        bottomSheetRef.current?.expand();
-        setIsSheetOpen(true);
-      }, 50);
-    }
-
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
-  }, [selectedDelivery]);
-
-  const markers = (
+  const markers = useMemo(() => (
     <TripMarkers sortedStops={sortedStops} onMarkerPress={onMarkerPress} />
-  );
+  ), [sortedStops, onMarkerPress]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

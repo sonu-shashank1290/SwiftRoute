@@ -15,14 +15,15 @@ type Props = {
   onMarkerPress: (item: DeliveryItem) => void;
 };
 
-const TripMarkers = memo(function TripMarkers({ sortedStops, onMarkerPress }: Props) {
+const TripMarkers = memo(({ sortedStops, onMarkerPress }: Props) => {
   return (
     <>
-      {sortedStops.slice(0, 50).map(item => (
+      {sortedStops.map(item => (
         <Marker
           key={item.id}
           coordinate={{ latitude: item.latitude, longitude: item.longitude }}
           onPress={() => onMarkerPress(item)}
+          tracksViewChanges={false}
         >
           <View style={{
             width: 32, height: 32, borderRadius: 16,

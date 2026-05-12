@@ -1,17 +1,14 @@
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import { Pressable } from '@/components/ui/pressable';
+import { memo } from 'react';
 
 type Props = {
   onEndTrip: () => void;
 };
-
-export default function TripControls({ onEndTrip }: Props) {
+const TripControls = memo(({ onEndTrip }: Props) => {
   return (
-    <Box style={{
-      position: 'absolute', bottom: 20,
-      left: 16, right: 16, zIndex: 1
-    }}>
+    <Box className="absolute bottom-5 left-4 right-4 z-10">
       <Pressable
         onPress={onEndTrip}
         className="bg-app-danger rounded-xl py-4 items-center"
@@ -21,3 +18,5 @@ export default function TripControls({ onEndTrip }: Props) {
     </Box>
   );
 }
+);
+export default TripControls;

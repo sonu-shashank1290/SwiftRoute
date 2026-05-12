@@ -26,8 +26,6 @@ export function useDriverDeliveries(tripId?: string, statusFilter?: Status) {
         ? [Q.where('status', statusFilter)]
         : filter !== 'all' ? [Q.where('status', filter)] : []
       ),
-      Q.skip(page * PAGE_LIMIT),
-      Q.take(PAGE_LIMIT),
     ];
 
     const subscription = database
@@ -47,7 +45,7 @@ export function useDriverDeliveries(tripId?: string, statusFilter?: Status) {
           userId: r.userId,
           driverId: r.driverId,
         }));
-        dispatch(setItems(page === 0 ? mapped : [...items, ...mapped]));
+        dispatch(setItems(mapped));
         dispatch(setLoading(false));
       });
 

@@ -25,7 +25,6 @@ export async function checkOffRouteFromPolyline(
   driverLat: number,
   driverLng: number,
   routePoints: { latitude: number; longitude: number }[],
-  nextStop: DeliveryItem,
   tripId: string,
   threshold: number = 50,
 ): Promise<void> {

@@ -1,4 +1,4 @@
-import { forwardRef, useCallback } from 'react';
+import { forwardRef, memo, useCallback } from 'react';
 import { Pressable } from '../ui/pressable';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ type Props = {
     showStatusUpdate?: boolean;
 };
 
-const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
+const DeliveryBottomSheet = memo(forwardRef<BottomSheet, Props>(
     ({ showStatusUpdate = false }, ref) => {
         const dispatch = useDispatch<AppDispatch>();
         const item = useSelector((s: RootState) => s.deliveries.selectedDelivery);
@@ -110,6 +110,6 @@ const DeliveryBottomSheet = forwardRef<BottomSheet, Props>(
             </BottomSheet>
         );
     }
-);
+));
 
 export default DeliveryBottomSheet;
