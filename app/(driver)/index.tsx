@@ -35,6 +35,7 @@ export default function DriverIndex() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [routePoints, setRoutePoints] = useState<Coords[]>([]);
+  const [routeCoords, setRouteCoords] = useState<Coords[]>([]);
   const [showPicker, setShowPicker] = useState<boolean>(false);
 
   const driverLocation = useLiveLocation(activeTripId);
@@ -45,9 +46,14 @@ export default function DriverIndex() {
   , [items]);
 
   const nextStop = sortedStops[0] ?? null;
-  const routeCoords = useMemo(() =>
-    sortedStops.map(i => ({ latitude: i.latitude, longitude: i.longitude }))
-  , [sortedStops]);
+
+  useEffect(() => {
+    setRouteCoords(sortedStops.map(i => ({ latitude: i.latitude, longitude: i.longitude })));
+  }, [sortedStops]);
+
+  useEffect(() => {
+    setRoutePoints([]);
+  }, [routeCoords]);
 
   useEffect(() => {
     if (!driverId) return;
