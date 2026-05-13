@@ -6,7 +6,7 @@ import type { Coords } from '@/types/driver/driver';
 import { memo, useMemo, useCallback } from 'react';
 import { darkMapStyle } from '@/constants/utils';
 import React from 'react';
-import DriverMarker from './driverMarker';
+import DriverMarker from './DriverMarker';
 
 type Props = {
     mapRef: React.RefObject<MapView | null>;

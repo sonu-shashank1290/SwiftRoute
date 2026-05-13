@@ -17,9 +17,11 @@
     "@legendapp/motion": "^2.5.3",
     "@nozbe/watermelondb": "^0.28.0",
     "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-community/netinfo": "11.4.1",
     "@reduxjs/toolkit": "^2.11.2",
     "@shopify/flash-list": "2.0.2",
     "@tanstack/react-query": "^5.100.10",
+    "axios": "^1.16.0",
     "babel-preset-expo": "~54.0.10",
     "expo": "~54.0.33",
     "expo-linking": "~8.0.12",
@@ -47,7 +49,8 @@
     "react-redux": "^9.2.0",
     "react-stately": "^3.46.0",
     "redux-persist": "^6.0.0",
-    "tailwind-variants": "^0.1.20"
+    "tailwind-variants": "^0.1.20",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",

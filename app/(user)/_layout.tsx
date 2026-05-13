@@ -32,6 +32,13 @@ export default function UserLayout() {
           tabBarIcon: ({ color }) => <Ionicons name="map-outline" size={22} color={color} />,
         }}
       />
+       <Tabs.Screen
+        name="dashboard"
+        options={{
+          title: 'Dashboard',
+          tabBarIcon: ({ color }) => <Ionicons name="map-outline" size={22} color={color} />,
+        }}
+      />
     </Tabs>
   );
 }

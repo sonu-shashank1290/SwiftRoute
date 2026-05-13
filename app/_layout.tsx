@@ -11,7 +11,6 @@ import type { RootState } from '@/store';
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
 import { seedDatabase } from '@/storage/seed';
 import { useEffect } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function ProtectedLayout() {
   const segments = useSegments();
@@ -68,18 +67,15 @@ function ProtectedLayout() {
 }
 
 function AppContent() {
-  const queryClient = new QueryClient();
 
   useEffect(() => {
     seedDatabase();
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <GluestackUIProvider mode="dark">
-        <ProtectedLayout />
-      </GluestackUIProvider>
-    </QueryClientProvider>
+    <GluestackUIProvider mode="dark">
+      <ProtectedLayout />
+    </GluestackUIProvider>
   );
 }
 
